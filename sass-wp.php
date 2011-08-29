@@ -56,12 +56,16 @@
       $this->sass = new SassParser( $this->sass_options );
     }
     
-    function set_sass_options( $options )
-      { $this->sass_options = $options; }
-    
-    function add_comment( $value )
-      { $this->comment_shown = $value; }
-    
+    /**
+     * Parse a SASS/SCSS file
+     *
+     * Parses an input file and saves it to 
+     * the specified CSS file.
+     *
+     * @param string $input Path of the scss/sass file, absolute
+     * @param string $output Desired path of the output file, absolute
+     * @return string Path to the created CSS file, relative to site root
+     */
     function scss_file( $input, $output )
     {
       // Load the Sass parser
@@ -94,14 +98,43 @@
       $output = str_replace( getcwd(), '', $output );
       return $output;
     }
+    
+    /**
+     * Set SASS options
+     *
+     * Used to set $this->sass_options with the appropriate
+     * options that are desired
+     *
+     * @param Array $options
+     */
+    function set_sass_options( $options )
+      { $this->sass_options = $options; }
+    
+    /**
+     * Disable/enable CSS comment
+     *
+     * Allows the user to enable or disable the comment
+     * being add to the generated CSS file
+     *
+     * @param boolean $value True or false?
+     */
+    function add_comment( $value )
+      { $this->comment_shown = $value; }
 
   }
   
-  // Instantiate our SASS class
-  $SASS = new SASS();
-  
   /* === FUNCTIONS === */
   
+  /**
+   * Parse a file
+   *
+   * Easier access function to parse a CSS file,
+   * used the SASS global class to do it.
+   *
+   * @param string $input Path of the scss/sass file, relative to template
+   * @param string $output Desired path of the output file, relative to template
+   * @return string Path to the created CSS file, relative to site root
+   */
   function scss_file( $input_file, $output_file )
   {
     // Setup the input and output paths to the correct locations
@@ -113,4 +146,7 @@
     global $SASS;
     return $SASS->scss_file( $input, $output );
   }
+  
+  // Instantiate our SASS class
+  $SASS = new SASS();
 ?>
